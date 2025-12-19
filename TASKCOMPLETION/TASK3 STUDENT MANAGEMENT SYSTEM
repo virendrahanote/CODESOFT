@@ -1,0 +1,218 @@
+import java.io.Serializable;
+
+public class Student implements Serializable {
+    private String name;
+    private int rollNumber;
+    private String grade;
+    private int age;
+
+    public Student(String name, int rollNumber, String grade, int age) {
+        this.name = name;
+        this.rollNumber = rollNumber;
+        this.grade = grade;
+        this.age = age;
+    }
+
+    public int getRollNumber() {
+        return rollNumber;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return rollNumber + "," + name + "," + grade + "," + age;
+    }
+
+    public static Student fromString(String data) {
+        String[] parts = data.split(",");
+        return new Student(
+                parts[1],
+                Integer.parseInt(parts[0]),
+                parts[2],
+                Integer.parseInt(parts[3])
+        );
+    }
+
+    public void display() {
+        System.out.println("Roll No: " + rollNumber +
+                ", Name: " + name +
+                ", Grade: " + grade +
+                ", Age: " + age);
+    }
+}
+import java.io.*;
+import java.util.*;
+
+public class StudentManagementSystem {
+    private static final String FILE_NAME = "students.txt";
+    private static ArrayList<Student> students = new ArrayList<>();
+    private static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        loadFromFile();
+        int choice;
+
+        do {
+            System.out.println("\n--- Student Management System ---");
+            System.out.println("1. Add Student");
+            System.out.println("2. Edit Student");
+            System.out.println("3. Delete Student");
+            System.out.println("4. Search Student");
+            System.out.println("5. Display All Students");
+            System.out.println("6. Exit");
+            System.out.print("Enter choice: ");
+
+            choice = sc.nextInt();
+            sc.nextLine(); // clear buffer
+
+            switch (choice) {
+                case 1 -> addStudent();
+                case 2 -> editStudent();
+                case 3 -> deleteStudent();
+                case 4 -> searchStudent();
+                case 5 -> displayAll();
+                case 6 -> saveToFile();
+                default -> System.out.println("Invalid choice!");
+            }
+        } while (choice != 6);
+
+        System.out.println("Exiting system...");
+    }
+
+    // 3️⃣ Add Student
+    private static void addStudent() {
+        System.out.print("Enter Roll Number: ");
+        int roll = sc.nextInt();
+        sc.nextLine();
+
+        if (findStudent(roll) != null) {
+            System.out.println("Student with this roll number already exists!");
+            return;
+        }
+
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+        if (name.isEmpty()) {
+            System.out.println("Name cannot be empty!");
+            return;
+        }
+
+        System.out.print("Enter Grade: ");
+        String grade = sc.nextLine();
+
+        System.out.print("Enter Age: ");
+        int age = sc.nextInt();
+
+        students.add(new Student(name, roll, grade, age));
+        System.out.println("Student added successfully!");
+    }
+
+    // 4️⃣ Edit Student
+    private static void editStudent() {
+        System.out.print("Enter Roll Number to Edit: ");
+        int roll = sc.nextInt();
+        sc.nextLine();
+
+        Student s = findStudent(roll);
+        if (s == null) {
+            System.out.println("Student not found!");
+            return;
+        }
+
+        System.out.print("Enter New Name: ");
+        s.setName(sc.nextLine());
+
+        System.out.print("Enter New Grade: ");
+        s.setGrade(sc.nextLine());
+
+        System.out.print("Enter New Age: ");
+        s.setAge(sc.nextInt());
+
+        System.out.println("Student updated successfully!");
+    }
+
+    // 5️⃣ Delete Student
+    private static void deleteStudent() {
+        System.out.print("Enter Roll Number to Delete: ");
+        int roll = sc.nextInt();
+
+        Student s = findStudent(roll);
+        if (s != null) {
+            students.remove(s);
+            System.out.println("Student removed successfully!");
+        } else {
+            System.out.println("Student not found!");
+        }
+    }
+
+    // 6️⃣ Search Student
+    private static void searchStudent() {
+        System.out.print("Enter Roll Number to Search: ");
+        int roll = sc.nextInt();
+
+        Student s = findStudent(roll);
+        if (s != null) {
+            s.display();
+        } else {
+            System.out.println("Student not found!");
+        }
+    }
+
+    // Display All
+    private static void displayAll() {
+        if (students.isEmpty()) {
+            System.out.println("No students available!");
+            return;
+        }
+        for (Student s : students) {
+            s.display();
+        }
+    }
+
+    // Helper Method
+    private static Student findStudent(int roll) {
+        for (Student s : students) {
+            if (s.getRollNumber() == roll) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    // File Write
+    private static void saveToFile() {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_NAME))) {
+            for (Student s : students) {
+                pw.println(s.toString());
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving file!");
+        }
+    }
+
+    // File Read
+    private static void loadFromFile() {
+        File file = new File(FILE_NAME);
+        if (!file.exists()) return;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                students.add(Student.fromString(line));
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file!");
+        }
+    }
+}
