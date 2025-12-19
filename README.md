@@ -1,8 +1,8 @@
-_JAVA DEVELOPER INTERNSHIP_
+**JAVA DEVELOPER INTERNSHIP**
 <br>
 **Task 1**
 <br>
-_Student Grade Calculator_
+**Student Grade Calculator**
 <br>
 **Input:** Take marks obtained (out of 100) in each subject.
 <br>
@@ -37,3 +37,27 @@ balance.
 7. Display appropriate messages to the user based on their chosen options and the success or failure
 of their transactions.
 <br>
+**TASK 3**
+<br>
+**STUDENT MANAGEMENT SYSTEM**
+<br>
+1.Create a Student class to represent individual students. Include attributes such as name, roll
+number, grade, and any other relevant details.
+<br>
+2.Implement a StudentManagementSystem class to manage the collection of students. Include
+methods to add a student, remove a student, search for a student, and display all students.
+<br>
+3 . Design the user interface for the Student Management System. This can be a console-based
+interface or a graphical user interface (GUI) using libraries like Swing or JavaFX.
+<br>
+4. Implement methods to read and write student data to a storage medium, such as a file or a
+database.
+<br>
+5. Allow users to interact with the Student Management System by providing options such as
+adding a new student, editing an existing student's information, searching for a student, displaying all
+students, and exiting the application.
+<br>
+6. Implement input validation to ensure that required fields are not left empty and that the student
+data is in the correct format.
+<br>
+
