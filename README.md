@@ -1,6 +1,6 @@
 _JAVA DEVELOPER INTERNSHIP_
 <br>
-**Task 2**
+**Task 1**
 <br>
 _Student Grade Calculator_
 <br>
